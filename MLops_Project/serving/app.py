@@ -1,5 +1,5 @@
 """
-Readmission risk API (plan step 10).
+Readmission risk API (plan step 10, extended in step 12).
 
 Serves the model in the bundle folder (made by serving/export_champion.py from the registry's @champion).
 The API never talks to MLflow: the bundle is a joblib pipeline plus a meta.json with the evidence.
@@ -13,6 +13,13 @@ Endpoints
     GET  /metrics      Prometheus metrics (latency, errors, volume, score distribution, model version)
     POST /reload       re-read the bundle after a new export (swap is atomic; a bad bundle is refused)
     GET  /docs         interactive documentation
+
+Replay headers (step 12, optional, used by the replay in step 11)
+    X-Replay-Run      run id, 1 to 64 characters of letters, digits, _ . -   -> logged as "run_id"
+    X-Replay-Week     simulated week number, an integer 0..1000              -> logged as "replay_week"
+                                                                                and shown in the gauge
+                                                                                readmission_replay_week
+    Normal traffic does not send them; the log then holds null for both.
 
 Settings (environment variables)
     BUNDLE_DIR        folder with model.joblib and meta.json   (default: serving/bundle next to this file)
@@ -31,6 +38,7 @@ import importlib.metadata as importlib_metadata
 import json
 import logging
 import os
+import re
 import threading
 import time
 import uuid
@@ -65,6 +73,8 @@ PREDICTION_LOG = os.environ.get("PREDICTION_LOG", str(HERE / "logs" / "predictio
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
 UI_DIR = HERE / "ui"
 DOC_PATHS = {"/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect"}
+RUN_ID_RE = re.compile(r"^[A-Za-z0-9_.-]{1,64}$")
+MAX_REPLAY_WEEK = 1000
 FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#4f46e5"/>'
            '<path d="M4 17h6l3-8 5 15 3-7h7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 SCORE_NOTE = ("Ranking score, not a probability: the model was trained with class weights, so scores run "
@@ -82,6 +92,8 @@ UNSEEN = Counter("readmission_unseen_category_total", "Category values never see
 MODEL_INFO = Gauge("readmission_model_info", "Live model (value is always 1)", ["name", "version", "family", "alias"])
 MODEL_LOADED_AT = Gauge("readmission_model_loaded_timestamp_seconds", "When the live model was loaded")
 RELOADS = Counter("readmission_model_reloads_total", "Model load attempts", ["outcome"])
+REPLAY_WEEK = Gauge("readmission_replay_week",
+                    "Simulated week of the most recent replay request (only set when X-Replay-Week is sent)")
 
 
 @dataclass
@@ -216,7 +228,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Readmission risk API", version="1.0",
+app = FastAPI(title="Readmission risk API", version="1.1",
               description="Scores hospital stays for 30-day readmission risk. " + SCORE_NOTE, lifespan=lifespan)
 
 
@@ -252,6 +264,25 @@ def require_state() -> ModelState:
 def reject(reason: str, message: str, problems: list) -> None:
     VALIDATION_ERRORS.labels(reason).inc()
     raise HTTPException(422, detail={"error": reason, "message": message, "problems": problems[:50]})
+
+
+def parse_replay_headers(run: Optional[str], week: Optional[str]):
+    """Validate the optional replay headers. Returns (run_id or None, week number or None)."""
+    run_id, week_no = None, None
+    if run is not None:
+        if not RUN_ID_RE.match(run):
+            reject("bad_replay_header", "X-Replay-Run must be 1 to 64 characters: letters, digits, _ . -",
+                   [{"header": "X-Replay-Run", "issue": "invalid"}])
+        run_id = run
+    if week is not None:
+        try:
+            week_no = int(week)
+            if not 0 <= week_no <= MAX_REPLAY_WEEK:
+                raise ValueError("out of range")
+        except ValueError:
+            reject("bad_replay_header", f"X-Replay-Week must be a whole number from 0 to {MAX_REPLAY_WEEK}",
+                   [{"header": "X-Replay-Week", "issue": "invalid"}])
+    return run_id, week_no
 
 
 def bad_rows(mask: pd.Series) -> list:
@@ -337,13 +368,15 @@ def explain(st: ModelState, df: pd.DataFrame, records: List[Dict[str, Any]], top
     return out, base
 
 
-def log_predictions(request_id: str, st: ModelState, records, ids, scores, flags) -> None:
+def log_predictions(request_id: str, st: ModelState, records, ids, scores, flags,
+                    run_id: Optional[str] = None, replay_week: Optional[int] = None) -> None:
     if not LOG_PREDICTIONS or not PREDICTION_LOG:
         return
     try:
         ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
         version = st.meta.get("version")
-        lines = [json.dumps({"ts": ts, "request_id": request_id, "model_version": version, "id": ids[i],
+        lines = [json.dumps({"ts": ts, "request_id": request_id, "model_version": version,
+                             "run_id": run_id, "replay_week": replay_week, "id": ids[i],
                              "score": round(float(scores[i]), 6), "high_risk": flags[i],
                              "features": {c: records[i].get(c) for c in st.required}}, default=str)
                  for i in range(len(records))]
@@ -370,11 +403,14 @@ def favicon():
 
 
 @app.post("/predict")
-def predict(req: PredictRequest):
+def predict(req: PredictRequest,
+            x_replay_run: Optional[str] = Header(default=None),
+            x_replay_week: Optional[str] = Header(default=None)):
     st = require_state()
     n = len(req.records)
     if n > MAX_RECORDS:
         reject("too_many_records", f"Send at most {MAX_RECORDS} records per request (got {n}).", [])
+    run_id, replay_week = parse_replay_headers(x_replay_run, x_replay_week)
     df, ignored, unseen, ids = build_frame(req.records, st)
     scores = st.pipe.predict_proba(df)[:, 1]
     flags = [bool(s >= st.cutoff) for s in scores] if st.cutoff is not None else [None] * n
@@ -391,8 +427,10 @@ def predict(req: PredictRequest):
     for s, f in zip(scores, flags):
         SCORES.observe(float(s))
         PREDICTIONS.labels("high_risk" if f else "low_risk").inc()
+    if replay_week is not None:
+        REPLAY_WEEK.set(replay_week)
     request_id = uuid.uuid4().hex[:12]
-    log_predictions(request_id, st, req.records, ids, scores, flags)
+    log_predictions(request_id, st, req.records, ids, scores, flags, run_id, replay_week)
 
     m = st.meta
     predictions = []
