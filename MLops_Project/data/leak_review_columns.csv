@@ -1,0 +1,54 @@
+column,verdict,reason
+encounter_id,EXCLUDE,Identifier. May act as a time proxy; not guaranteed chronological.
+patient_nbr,EXCLUDE,Identifier. Lets a model memorize patients. Use only to group the split.
+race,KEEP-WATCH,Known at admission. Sensitive: keep at least for fairness slices; decide whether the model sees it.
+gender,KEEP-WATCH,Known at admission. Sensitive: same as race.
+age,KEEP-WATCH,Known at admission. Sensitive: same as race.
+admission_type_id,KEEP,Known at admission.
+discharge_disposition_id,KEEP-WATCH,"Decided at discharge, so usable if scoring happens at discharge. Strong signal: check first if AUC looks too high."
+admission_source_id,KEEP,Known at admission.
+time_in_hospital,KEEP,"Length of stay, known at discharge."
+payer_code,KEEP,Known during the stay. Mostly missing.
+medical_specialty,KEEP,Admitting physician specialty. Mostly missing.
+num_lab_procedures,KEEP,Count during the stay.
+num_procedures,KEEP,Count during the stay.
+num_medications,KEEP,Count during the stay.
+number_outpatient,KEEP,Visits in the year BEFORE the encounter.
+number_emergency,KEEP,Visits in the year BEFORE the encounter.
+number_inpatient,KEEP,Visits in the year BEFORE the encounter.
+diag_1,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.
+diag_2,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.
+diag_3,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.
+number_diagnoses,KEEP-WATCH,Diagnosis entries may be finalized after discharge in real systems.
+max_glu_serum,KEEP,Test done during the stay (or not_measured).
+A1Cresult,KEEP,Test done during the stay (or not_measured).
+metformin,KEEP,Medication given during the stay.
+repaglinide,KEEP,Medication given during the stay.
+nateglinide,KEEP,Medication given during the stay.
+chlorpropamide,KEEP,Medication given during the stay.
+glimepiride,KEEP,Medication given during the stay.
+acetohexamide,KEEP,Medication given during the stay.
+glipizide,KEEP,Medication given during the stay.
+glyburide,KEEP,Medication given during the stay.
+tolbutamide,KEEP,Medication given during the stay.
+pioglitazone,KEEP,Medication given during the stay.
+rosiglitazone,KEEP,Medication given during the stay.
+acarbose,KEEP,Medication given during the stay.
+miglitol,KEEP,Medication given during the stay.
+troglitazone,KEEP,Medication given during the stay.
+tolazamide,KEEP,Medication given during the stay.
+insulin,KEEP,Medication given during the stay.
+glyburide-metformin,KEEP,Medication given during the stay.
+glipizide-metformin,KEEP,Medication given during the stay.
+glimepiride-pioglitazone,KEEP,Medication given during the stay.
+metformin-rosiglitazone,KEEP,Medication given during the stay.
+metformin-pioglitazone,KEEP,Medication given during the stay.
+change,KEEP,Medication change during the stay.
+diabetesMed,KEEP,Diabetic medication prescribed during the stay.
+readmitted,TARGET,Label: 1 = readmitted in <30 days.
+readmitted_raw,EXCLUDE,The target in its original three-class form.
+n_drugs_taken,KEEP,Derived from the drug columns.
+n_drugs_changed,KEEP,Derived from the drug columns.
+diag_1_group,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.
+diag_2_group,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.
+diag_3_group,KEEP-WATCH,Diagnosis codes may be finalized after discharge in real systems.

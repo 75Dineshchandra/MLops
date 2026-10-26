@@ -1,0 +1,68 @@
+{
+  "exclude_discharge_ids": [
+    "11",
+    "13",
+    "14",
+    "19",
+    "20",
+    "21"
+  ],
+  "invalid_gender": "Unknown/Invalid",
+  "group_unknown_ids": true,
+  "unknown_id_groups": {
+    "admission_type_id": [
+      "5",
+      "6",
+      "8"
+    ],
+    "discharge_disposition_id": [
+      "18",
+      "25",
+      "26"
+    ],
+    "admission_source_id": [
+      "15",
+      "17",
+      "20",
+      "21",
+      "9"
+    ]
+  },
+  "drop_columns": [
+    "weight",
+    "examide",
+    "citoglipton"
+  ],
+  "constant_columns_dropped": [],
+  "add_diagnosis_groups": true,
+  "add_drug_summary": true,
+  "drop_rare_drugs": false,
+  "rare_drug_min_rows": 100,
+  "rare_drugs_dropped": [],
+  "one_encounter_per_patient": false,
+  "target_mapping": {
+    "<30": 1,
+    ">30": 0,
+    "NO": 0
+  },
+  "drug_values_in_cleaned_file": [
+    "Down",
+    "No",
+    "Steady",
+    "Up"
+  ],
+  "steps": [
+    [
+      "Original rows",
+      101766
+    ],
+    [
+      "After dropping expired/hospice discharges",
+      99343
+    ],
+    [
+      "After dropping invalid gender",
+      99340
+    ]
+  ]
+}

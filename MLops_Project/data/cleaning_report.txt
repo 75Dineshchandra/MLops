@@ -1,0 +1,52 @@
+DATA CLEANING REPORT
+============================================================
+Input: diabetic_data.csv  (101,766 rows x 50 columns)
+Output rows x columns: 99,340 x 53
+
+Row counts by step:
+- Original rows: 101,766
+- After dropping expired/hospice discharges: 99,343
+- After dropping invalid gender: 99,340
+
+Excluded discharge IDs (raw id: rows):
+- 11: 1642
+- 13: 399
+- 14: 372
+- 19: 8
+- 20: 2
+
+Rows regrouped to 'unknown' per column:
+- admission_type_id: 10144
+- discharge_disposition_id: 4680
+- admission_source_id: 6854
+
+Missing values in the RAW file (before filling):
+- weight: 98569 (96.9%)
+- medical_specialty: 49949 (49.1%)
+- payer_code: 40256 (39.6%)
+- race: 2273 (2.2%)
+- diag_3: 1423 (1.4%)
+- diag_2: 358 (0.4%)
+- diag_1: 21 (0.0%)
+
+Numeric columns still missing after parsing:
+- none
+
+Dropped columns: ['weight', 'examide', 'citoglipton']
+Constant columns dropped automatically: none
+Rare drug columns (<100 non-'No' rows): ['acetohexamide', 'chlorpropamide', 'glimepiride-pioglitazone', 'glipizide-metformin', 'metformin-pioglitazone', 'metformin-rosiglitazone', 'miglitol', 'tolazamide', 'tolbutamide', 'troglitazone']
+Rare drug columns dropped: none (DROP_RARE_DRUGS is off)
+
+Target (1 = readmitted <30 days):
+- 0: 88,026
+- 1: 11,314
+- positive rate: 11.39%
+
+Unique patients: 69,987
+Max encounters for one patient: 40
+
+Notes:
+- IDs are kept for tracking/splitting; exclude them from model features.
+- readmitted_raw keeps the original three-class label. Do not use it as a feature.
+- 'NO' readmission means none observed, not proof of complete follow-up.
+- Categories are readable strings. Encode in the training pipeline, fit on train only.

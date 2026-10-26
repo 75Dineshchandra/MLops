@@ -1,0 +1,46 @@
+SPLIT REPORT
+============================================================
+Method: StratifiedGroupKFold(20 folds, shuffle, seed=42), grouped by patient_nbr
+Rows: 99,340   Patients: 69,987   Overall positive rate: 11.39%
+
+Split sizes
+split      target      rows  row share  patients  positives  pos rate
+train         60%    59,753      60.1%    42,054      6,865    11.49%
+test          15%    14,907      15.0%    10,483      1,722    11.55%
+holdout       25%    24,680      24.8%    17,450      2,727    11.05%
+
+Files written (rows)
+- train.csv: 59,753
+- test.csv: 14,907
+- holdout.csv: 24,680
+
+Patient overlap between splits (must be 0)
+- train & test: 0
+- train & holdout: 0
+- test & holdout: 0
+
+Every encounter assigned exactly once: yes
+
+Rows in test/holdout whose category never appears in train (columns with at least one)
+- test.admission_source_id: 1 rows, values ['11']
+- test.medical_specialty: 2 rows, values ['Dermatology', 'Neurophysiology']
+- test.diag_1: 31 rows, values ['148', '217', '229', '262', '299', '347', '365', '369'] ...
+- test.diag_2: 34 rows, values ['115', '140', '173', '215', '235', '316', '350', '353'] ...
+- test.diag_3: 32 rows, values ['122', '123', '141', '158', '17', '173', '250.31', '259'] ...
+- test.acarbose: 3 rows, values ['Down']
+- test.tolazamide: 1 rows, values ['Up']
+- holdout.admission_source_id: 3 rows, values ['11', '14']
+- holdout.medical_specialty: 3 rows, values ['Perinatology', 'Psychiatry-Addictive', 'Speech']
+- holdout.diag_1: 34 rows, values ['10', '143', '145', '187', '229', '262', '363', '366'] ...
+- holdout.diag_2: 55 rows, values ['145', '163', '179', '182', '186', '192', '195', '212'] ...
+- holdout.diag_3: 62 rows, values ['11', '115', '14', '141', '164', '173', '186', '217'] ...
+- holdout.chlorpropamide: 1 rows, values ['Down']
+- holdout.acetohexamide: 1 rows, values ['Steady']
+- holdout.diag_1_group: 1 rows, values ['external']
+
+Notes
+- Do not use the holdout for tuning or model selection; it is for the step 11 replay.
+- Tune with cross-validation inside train, grouped by patient_nbr.
+- Fit all preprocessing on train only.
+- split_assignments.csv is the source of truth. If data_cleaning.py is re-run, re-run this script too.
+- Read the ID columns as strings: dtype={'encounter_id': str, 'patient_nbr': str}.

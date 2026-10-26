@@ -1,0 +1,69 @@
+EVALUATION GATE (test split)
+============================================================
+Created: 2026-10-23 10:32
+Test rows: 14,907   Patients: 10,483   Positive rate: 11.55%
+Reference model (for comparisons and fairness detail): lightgbm, current champion in models/champion.json
+
+Test results (PR-AUC with patient-level bootstrap 95% CI)
+model        CV PR  test PR            95% CI    ROC   lift    drop   gate
+lightgbm     0.224    0.222       0.200-0.247  0.670  1.93x  +0.002   PASS
+xgboost      0.226    0.218       0.197-0.240  0.670  1.89x  +0.008   PASS
+logistic     0.211    0.206       0.188-0.229  0.660  1.78x  +0.005   FAIL
+
+Gate checks
+  xgboost:
+    [x] lift >= 1.5
+    [x] CV-to-test drop <= 0.02
+    [x] ROC-AUC gap by group <= 0.05
+    [x] recall gap by group <= 0.1
+    [x] beats logistic baseline
+  lightgbm:
+    [x] lift >= 1.5
+    [x] CV-to-test drop <= 0.02
+    [x] ROC-AUC gap by group <= 0.05
+    [x] recall gap by group <= 0.1
+    [x] beats logistic baseline
+  logistic:
+    [x] lift >= 1.5
+    [x] CV-to-test drop <= 0.02
+    [ ] ROC-AUC gap by group <= 0.05
+    [ ] recall gap by group <= 0.1
+
+Paired bootstrap: PR-AUC difference vs the reference model (positive = reference better)
+  lightgbm - xgboost: +0.005  95% CI [-0.001, +0.010]  -> no clear difference
+  lightgbm - logistic: +0.016  95% CI [+0.005, +0.027]  -> reference clearly better
+
+Calibration (informational, not gated: class weights inflate probabilities)
+  actual positive rate: 0.116
+  xgboost    mean predicted 0.455   Brier 0.219   ECE 0.340
+  lightgbm   mean predicted 0.428   Brier 0.204   ECE 0.313
+  logistic   mean predicted 0.466   Brier 0.228   ECE 0.351
+
+Fairness detail for lightgbm (flag top 20% by score; overall recall 0.380)
+column  group                 n   pos    ROC  recall  flag%  gated
+gender  Female             7907   908  0.668   0.368  19.6%  yes
+gender  Male               7000   814  0.672   0.394  20.5%  yes
+race    AfricanAmerican    2806   307  0.658   0.384  20.7%  yes
+race    Asian               101    11  0.707   0.273   8.9%  no (small)
+race    Caucasian         11168  1322  0.669   0.382  20.5%  yes
+race    Hispanic            302    36  0.809   0.528  16.9%  no (small)
+race    Other               220    18  0.668   0.167  10.5%  no (small)
+race    missing             310    28  0.632   0.250  11.0%  no (small)
+age     [0-10)               22     0    nan     nan   0.0%  no (small)
+age     [10-20)              97     5  0.857   0.400   6.2%  no (small)
+age     [20-30)             248    38  0.738   0.579  23.8%  no (small)
+age     [30-40)             561    63  0.688   0.381  18.7%  yes
+age     [40-50)            1500   166  0.717   0.476  20.6%  yes
+age     [50-60)            2407   242  0.696   0.326  14.4%  yes
+age     [60-70)            3324   369  0.670   0.379  19.5%  yes
+age     [70-80)            3860   464  0.644   0.377  21.2%  yes
+age     [80-90)            2494   326  0.630   0.377  25.1%  yes
+age     [90-100)            394    49  0.591   0.224  16.2%  no (small)
+
+GATE OUTCOME (the gate does not choose a champion; that is a human decision):
+  xgboost: PASS (eligible to register)
+  lightgbm: PASS (eligible to register)
+  logistic: FAIL (do not promote)
+
+Reminder: the test split has now been used for selection. Do not tune on it;
+any new challenger needs the same gate plus a fresh check against the holdout later.

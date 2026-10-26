@@ -1,0 +1,114 @@
+{
+  "created": "2026-10-23 10:32",
+  "reference_model": "lightgbm",
+  "reference_basis": "current champion in models/champion.json",
+  "results": {
+    "xgboost": {
+      "file": "01_xgboost_prauc0.226.joblib",
+      "cv_pr_auc": 0.226,
+      "test_pr_auc": 0.2178047929284486,
+      "pr_auc_ci95": [
+        0.19689062663155965,
+        0.24047659681921843
+      ],
+      "test_roc_auc": 0.6701287450059613,
+      "lift": 1.8854913171802457,
+      "cv_drop": 0.008195207071551414,
+      "brier": 0.21896830909143622,
+      "ece": 0.339552799312851,
+      "mean_pred": 0.45506900548934937,
+      "recall_at_cutoff": 0.38559814169570267,
+      "worst_auc_gap": 0.04794154920762306,
+      "worst_recall_gap": 0.09220971194363653,
+      "params": {
+        "colsample_bytree": 0.8,
+        "learning_rate": 0.05,
+        "max_depth": 4,
+        "min_child_weight": 5,
+        "n_estimators": 300,
+        "random_state": 42,
+        "scale_pos_weight": 7.704,
+        "subsample": 0.8
+      },
+      "checks": {
+        "lift >= 1.5": true,
+        "CV-to-test drop <= 0.02": true,
+        "ROC-AUC gap by group <= 0.05": true,
+        "recall gap by group <= 0.1": true,
+        "beats logistic baseline": true
+      },
+      "passed": true
+    },
+    "lightgbm": {
+      "file": "02_lightgbm_prauc0.224.joblib",
+      "cv_pr_auc": 0.224,
+      "test_pr_auc": 0.2223787245308136,
+      "pr_auc_ci95": [
+        0.20018894477413426,
+        0.24731078988826918
+      ],
+      "test_roc_auc": 0.6698546151721878,
+      "lift": 1.9250869027763287,
+      "cv_drop": 0.0016212754691864173,
+      "brier": 0.2044517187476416,
+      "ece": 0.31277908665263027,
+      "mean_pred": 0.42829528709537523,
+      "recall_at_cutoff": 0.3803716608594657,
+      "worst_auc_gap": 0.03995343119102279,
+      "worst_recall_gap": 0.05392537986773016,
+      "params": {
+        "class_weight": null,
+        "colsample_bytree": 0.8,
+        "learning_rate": 0.05,
+        "max_depth": -1,
+        "min_child_samples": 40,
+        "min_child_weight": 0.001,
+        "n_estimators": 300,
+        "num_leaves": 31,
+        "random_state": 42,
+        "subsample": 0.8,
+        "subsample_freq": 1,
+        "scale_pos_weight": 7.704
+      },
+      "checks": {
+        "lift >= 1.5": true,
+        "CV-to-test drop <= 0.02": true,
+        "ROC-AUC gap by group <= 0.05": true,
+        "recall gap by group <= 0.1": true,
+        "beats logistic baseline": true
+      },
+      "passed": true
+    },
+    "logistic": {
+      "file": "03_logistic_prauc0.211.joblib",
+      "cv_pr_auc": 0.211,
+      "test_pr_auc": 0.20619447586268536,
+      "pr_auc_ci95": [
+        0.18798069503960335,
+        0.22854689388620142
+      ],
+      "test_roc_auc": 0.6603539287465034,
+      "lift": 1.7849831891318528,
+      "cv_drop": 0.004805524137314637,
+      "brier": 0.22798540054315958,
+      "ece": 0.35068692922184,
+      "mean_pred": 0.46620312966458494,
+      "recall_at_cutoff": 0.3693379790940767,
+      "worst_auc_gap": 0.05035602278584872,
+      "worst_recall_gap": 0.1255363262015147,
+      "params": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 2000,
+        "random_state": 42
+      },
+      "checks": {
+        "lift >= 1.5": true,
+        "CV-to-test drop <= 0.02": true,
+        "ROC-AUC gap by group <= 0.05": false,
+        "recall gap by group <= 0.1": false
+      },
+      "passed": false
+    }
+  }
+}

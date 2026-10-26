@@ -1,0 +1,10 @@
+{
+  "model": "xgboost",
+  "file": "01_xgboost_prauc0.226.joblib",
+  "mlflow_run_id": "1c1a1ab0a3ef42c38fdcfc3f0f0e4cfb",
+  "cv_pr_auc_mean": 0.2259,
+  "cv_roc_auc_mean": 0.6715,
+  "status": "top of the CV ranking only. NOT the champion. The champion is in models/champion.json (registry alias @champion), set after the evaluation gate (step 8).",
+  "ranked_by": "cross-validated PR-AUC on the train split",
+  "created": "2026-10-21 11:10"
+}

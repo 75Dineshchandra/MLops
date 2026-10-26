@@ -1,0 +1,142 @@
+LEAK REVIEW REPORT
+============================================================
+Rows: 99,340   Patients: 69,987   Positive rate: 11.39%
+
+1. COLUMN VERDICTS (full table in leak_review_columns.csv)
+- EXCLUDE: encounter_id, patient_nbr, readmitted_raw
+- KEEP-WATCH: race, gender, age, discharge_disposition_id, diag_1, diag_2, diag_3, number_diagnoses, diag_1_group, diag_2_group, diag_3_group
+- KEEP: 38 columns
+
+2. SINGLE-COLUMN AUC, numeric columns (flag above 0.7)
+- number_inpatient: 0.607
+- time_in_hospital: 0.548
+- number_diagnoses: 0.544
+- num_medications: 0.544
+- number_emergency: 0.532
+- n_drugs_changed: 0.526
+- num_lab_procedures: 0.522
+- number_outpatient: 0.520
+- num_procedures: 0.504
+- n_drugs_taken: 0.503
+
+3. IDENTIFIERS AS PREDICTORS (should be close to 0.5)
+- encounter_id: 0.508
+- patient_nbr: 0.510
+
+4. CATEGORICAL COLUMNS, out-of-fold AUC grouped by patient (flag above 0.7)
+- diag_1: 0.573
+- discharge_disposition_id: 0.573
+- diag_3: 0.565
+- diag_2: 0.563
+- insulin: 0.532
+- medical_specialty: 0.528
+- age: 0.526
+- diag_1_group: 0.524
+- diag_3_group: 0.519
+- payer_code: 0.516
+- admission_source_id: 0.513
+- diag_2_group: 0.513
+- diabetesMed: 0.512
+- metformin: 0.512
+- admission_type_id: 0.510
+- change: 0.509
+- A1Cresult: 0.507
+- race: 0.499
+- glyburide: 0.497
+- max_glu_serum: 0.497
+- rosiglitazone: 0.496
+- glimepiride: 0.496
+- pioglitazone: 0.496
+- repaglinide: 0.495
+- glipizide: 0.494
+- acarbose: 0.493
+- chlorpropamide: 0.493
+- tolbutamide: 0.493
+- glipizide-metformin: 0.493
+- tolazamide: 0.493
+- troglitazone: 0.493
+- metformin-rosiglitazone: 0.493
+- glimepiride-pioglitazone: 0.493
+- metformin-pioglitazone: 0.493
+- acetohexamide: 0.493
+- miglitol: 0.493
+- nateglinide: 0.493
+- gender: 0.492
+- glyburide-metformin: 0.492
+
+5. READMISSION RATE BY CATEGORY (categories with at least 50 rows)
+- discharge_disposition_id
+    23: rate 7.3%, n=412
+    1: rate 9.3%, n=60,232
+    unknown: rate 11.8%, n=4,680
+    6: rate 12.7%, n=12,902
+    4: rate 12.8%, n=815
+    8: rate 13.9%, n=108
+    7: rate 14.4%, n=623
+    3: rate 14.7%, n=13,954
+    2: rate 16.1%, n=2,128
+    5: rate 20.9%, n=1,184
+    22: rate 27.7%, n=1,992
+    28: rate 36.7%, n=139
+    15: rate 44.4%, n=63
+- admission_source_id
+    6: rate 9.5%, n=2,239
+    4: rate 9.9%, n=3,118
+    2: rate 10.3%, n=1,081
+    1: rate 10.7%, n=29,167
+    unknown: rate 10.8%, n=6,854
+    7: rate 12.0%, n=55,848
+    5: rate 12.4%, n=806
+    3: rate 15.7%, n=185
+- admission_type_id
+    3: rate 10.5%, n=18,667
+    unknown: rate 10.9%, n=10,144
+    2: rate 11.4%, n=18,132
+    1: rate 11.8%, n=52,369
+- A1Cresult
+    Norm: rate 9.8%, n=4,922
+    >8: rate 9.9%, n=8,137
+    >7: rate 10.1%, n=3,775
+    not_measured: rate 11.7%, n=82,506
+- diag_1_group
+    musculoskeletal: rate 9.5%, n=4,935
+    respiratory: rate 10.1%, n=13,934
+    digestive: rate 10.8%, n=9,333
+    neoplasms: rate 10.9%, n=3,131
+    other: rate 11.0%, n=13,607
+    genitourinary: rate 11.0%, n=5,002
+    circulatory: rate 11.7%, n=29,680
+    infectious: rate 12.3%, n=2,553
+    injury: rate 12.4%, n=6,851
+    diabetes: rate 13.1%, n=8,661
+    supplementary: rate 16.2%, n=1,632
+
+   diag_1_group share of rows:
+    circulatory: 29.9%
+    respiratory: 14.0%
+    other: 13.7%
+    digestive: 9.4%
+    diabetes: 8.7%
+    injury: 6.9%
+    genitourinary: 5.0%
+    musculoskeletal: 5.0%
+    neoplasms: 3.2%
+    infectious: 2.6%
+    supplementary: 1.6%
+    missing: 0.0%
+    external: 0.0%
+
+6. SPLIT LEAKAGE
+- Random row split: 41.5% of test rows belong to a patient also in train
+- Patient-grouped split: 0 shared patients (must be 0)
+
+7. GROUPED-SPLIT GRADIENT BOOSTING AUC (warning above 0.75)
+- allowed features: 0.669
+- allowed features without discharge_disposition_id: 0.638
+- allowed features + encounter_id (leak demo): 0.672
+
+How to read this:
+- Published models on this dataset land around 0.6-0.7 AUC. Much higher means look for a leak.
+- If 'without discharge_disposition_id' drops a lot, the model leans on that column.
+- If '+ encounter_id' beats 'allowed features', encounter_id carries time information.
+- Write your own decision next to every KEEP-WATCH column before training.

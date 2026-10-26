@@ -1,0 +1,67 @@
+artifact_path: file:///C:/Users/DINESHCHANDRA GADDAM/Downloads/MLops_Project/mlruns/1/models/m-e51b827cf51e4ada9fbd71add44d85c3/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.9.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.2
+is_signature_from_type_hint: false
+mlflow_version: 3.1.4
+model_id: m-e51b827cf51e4ada9fbd71add44d85c3
+model_size_bytes: 1086918
+model_uuid: m-e51b827cf51e4ada9fbd71add44d85c3
+prompts: null
+run_id: 4270f0d3da7546dcaaca227cec44d00f
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "string", "name": "race", "required": true}, {"type": "string",
+    "name": "gender", "required": true}, {"type": "string", "name": "age", "required":
+    true}, {"type": "string", "name": "admission_type_id", "required": true}, {"type":
+    "string", "name": "discharge_disposition_id", "required": true}, {"type": "string",
+    "name": "admission_source_id", "required": true}, {"type": "long", "name": "time_in_hospital",
+    "required": true}, {"type": "string", "name": "payer_code", "required": true},
+    {"type": "string", "name": "medical_specialty", "required": true}, {"type": "long",
+    "name": "num_lab_procedures", "required": true}, {"type": "long", "name": "num_procedures",
+    "required": true}, {"type": "long", "name": "num_medications", "required": true},
+    {"type": "long", "name": "number_outpatient", "required": true}, {"type": "long",
+    "name": "number_emergency", "required": true}, {"type": "long", "name": "number_inpatient",
+    "required": true}, {"type": "long", "name": "number_diagnoses", "required": true},
+    {"type": "string", "name": "max_glu_serum", "required": true}, {"type": "string",
+    "name": "A1Cresult", "required": true}, {"type": "string", "name": "metformin",
+    "required": true}, {"type": "string", "name": "repaglinide", "required": true},
+    {"type": "string", "name": "nateglinide", "required": true}, {"type": "string",
+    "name": "chlorpropamide", "required": true}, {"type": "string", "name": "glimepiride",
+    "required": true}, {"type": "string", "name": "acetohexamide", "required": true},
+    {"type": "string", "name": "glipizide", "required": true}, {"type": "string",
+    "name": "glyburide", "required": true}, {"type": "string", "name": "tolbutamide",
+    "required": true}, {"type": "string", "name": "pioglitazone", "required": true},
+    {"type": "string", "name": "rosiglitazone", "required": true}, {"type": "string",
+    "name": "acarbose", "required": true}, {"type": "string", "name": "miglitol",
+    "required": true}, {"type": "string", "name": "troglitazone", "required": true},
+    {"type": "string", "name": "tolazamide", "required": true}, {"type": "string",
+    "name": "insulin", "required": true}, {"type": "string", "name": "glyburide-metformin",
+    "required": true}, {"type": "string", "name": "glipizide-metformin", "required":
+    true}, {"type": "string", "name": "glimepiride-pioglitazone", "required": true},
+    {"type": "string", "name": "metformin-rosiglitazone", "required": true}, {"type":
+    "string", "name": "metformin-pioglitazone", "required": true}, {"type": "string",
+    "name": "change", "required": true}, {"type": "string", "name": "diabetesMed",
+    "required": true}, {"type": "long", "name": "n_drugs_taken", "required": true},
+    {"type": "long", "name": "n_drugs_changed", "required": true}, {"type": "string",
+    "name": "diag_1_group", "required": true}, {"type": "string", "name": "diag_2_group",
+    "required": true}, {"type": "string", "name": "diag_3_group", "required": true}]'
+  outputs: '[{"type": "integer", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-10-21 05:40:44.033656'

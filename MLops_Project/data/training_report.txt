@@ -1,0 +1,71 @@
+TRAINING REPORT
+============================================================
+Created: 2026-10-21 11:10
+Data: train.csv only. Test and holdout were not loaded.
+Train rows: 59,753   Patients: 42,054   Positive rate: 11.49%
+Features: 46 (10 numeric, 36 categorical)
+Cross-validation: 5-fold, stratified, grouped by patient_nbr, seed 42
+Rare categories (under 50 rows) are grouped into one bucket.
+MLflow: sqlite:///C:/Users/DINESHCHANDRA GADDAM/Downloads/MLops_Project/mlflow.db   Experiment: readmission-30d
+
+BEST MODEL (by CV PR-AUC, among models that finished): xgboost
+  PR-AUC 0.226   file: models/01_xgboost_prauc0.226.joblib   run: 1c1a1ab0a3ef42c38fdcfc3f0f0e4cfb
+  A candidate only: confirm on the test split in the evaluation gate (step 8).
+
+CV results, best first (mean +/- std across folds)
+rank  model                 PR-AUC           ROC-AUC    lift   file
+1     xgboost      0.226 +/- 0.007   0.671 +/- 0.010   1.97x   01_xgboost_prauc0.226.joblib
+2     lightgbm     0.224 +/- 0.006   0.669 +/- 0.007   1.95x   02_lightgbm_prauc0.224.joblib
+3     logistic     0.211 +/- 0.008   0.663 +/- 0.011   1.84x   03_logistic_prauc0.211.joblib
+No-skill PR-AUC is about 0.115 (the positive rate). Lift = PR-AUC / positive rate.
+
+xgboost  (run 1c1a1ab0a3ef42c38fdcfc3f0f0e4cfb)
+  params: {"n_estimators": 300, "learning_rate": 0.05, "max_depth": 4, "subsample": 0.8, "colsample_bytree": 0.8, "min_child_weight": 5, "scale_pos_weight": 7.704}
+  PR-AUC by fold: 0.232, 0.227, 0.224, 0.213, 0.233
+  top 10 features by mean |SHAP|:
+    medical_specialty_Otolaryngology: 0.6669
+    discharge_disposition_id_28: 0.6206
+    medical_specialty_Pediatrics-Endocrinology: 0.5464
+    medical_specialty_ObstetricsandGynecology: 0.4311
+    number_inpatient: 0.2715
+    discharge_disposition_id_2: 0.2438
+    discharge_disposition_id_infrequent_sklearn: 0.2387
+    rosiglitazone_infrequent_sklearn: 0.2386
+    discharge_disposition_id_23: 0.2191
+    diag_1_group_supplementary: 0.2139
+
+lightgbm  (run 4270f0d3da7546dcaaca227cec44d00f)
+  params: {"n_estimators": 300, "learning_rate": 0.05, "num_leaves": 31, "subsample": 0.8, "subsample_freq": 1, "colsample_bytree": 0.8, "min_child_samples": 40, "scale_pos_weight": 7.704}
+  PR-AUC by fold: 0.230, 0.223, 0.227, 0.213, 0.227
+  top 10 features by mean |SHAP|:
+    number_inpatient: 0.2989
+    discharge_disposition_id_1: 0.1934
+    num_lab_procedures: 0.0680
+    number_diagnoses: 0.0666
+    age_[50-60): 0.0603
+    time_in_hospital: 0.0601
+    num_medications: 0.0535
+    number_emergency: 0.0479
+    diag_1_group_circulatory: 0.0466
+    payer_code_missing: 0.0455
+
+logistic  (run 36175d9d22d64f29894b58705ae5646c)
+  params: {"C": 1.0, "class_weight": "balanced", "max_iter": 2000}
+  PR-AUC by fold: 0.210, 0.207, 0.224, 0.200, 0.213
+  top 10 features by coefficient:
+    discharge_disposition_id_28: 1.2928
+    medical_specialty_Pediatrics-Endocrinology: -1.1097
+    discharge_disposition_id_22: 0.8766
+    discharge_disposition_id_23: -0.8386
+    medical_specialty_Otolaryngology: -0.7996
+    medical_specialty_Hematology/Oncology: 0.7987
+    medical_specialty_ObstetricsandGynecology: -0.6823
+    discharge_disposition_id_1: -0.5844
+    medical_specialty_Oncology: 0.5066
+    medical_specialty_Neurology: -0.4806
+
+Notes
+- Compare models on these CV numbers. The test split is reserved for the evaluation gate (step 8).
+- Only the logistic model is tagged baseline; the others are tagged candidate.
+- SHAP / coefficients are on one-hot columns, so names look like column_value.
+- Load a saved model: joblib.load('models/<file>'), same package versions as training.
