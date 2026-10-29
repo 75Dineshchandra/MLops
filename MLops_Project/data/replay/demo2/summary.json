@@ -1,0 +1,251 @@
+{
+  "run_id": "demo2",
+  "created": "2026-10-29 09:38:29",
+  "stopped": "finished",
+  "model_versions_seen": [
+    2
+  ],
+  "seed": 42,
+  "seconds_per_week": 120.0,
+  "clean_week_flagged_share": 0.20703346568349404,
+  "weeks": [
+    {
+      "week": 1,
+      "scenarios": [],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 384,
+      "mean_score": 0.4194547340787555,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 0,
+      "api_unseen_change": 0.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.07020228095238099,
+      "error": null
+    },
+    {
+      "week": 2,
+      "scenarios": [],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 403,
+      "mean_score": 0.42830038745746235,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 0,
+      "api_unseen_change": 0.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.07503808571428768,
+      "error": null
+    },
+    {
+      "week": 3,
+      "scenarios": [],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 427,
+      "mean_score": 0.4270743957219252,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 2,
+      "api_unseen_change": 2.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.04359682380952482,
+      "error": null
+    },
+    {
+      "week": 4,
+      "scenarios": [],
+      "stays_planned": 2056,
+      "scored": 2056,
+      "flagged": 494,
+      "mean_score": 0.43949531663424124,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 0,
+      "api_unseen_change": 0.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.04529558571428403,
+      "error": null
+    },
+    {
+      "week": 5,
+      "scenarios": [
+        {
+          "name": "covariate_shift",
+          "first": 5,
+          "last": 6,
+          "severity": 0.5
+        }
+      ],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 997,
+      "mean_score": 0.5235340238210986,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 0,
+      "api_unseen_change": 0.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.04241247142856862,
+      "error": null
+    },
+    {
+      "week": 6,
+      "scenarios": [
+        {
+          "name": "covariate_shift",
+          "first": 5,
+          "last": 6,
+          "severity": 0.5
+        }
+      ],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 1022,
+      "mean_score": 0.535665728245017,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 1,
+      "api_unseen_change": 1.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.06264854285712404,
+      "error": null
+    },
+    {
+      "week": 7,
+      "scenarios": [],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 415,
+      "mean_score": 0.4287876723383568,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 1,
+      "api_unseen_change": 1.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.04034365238093566,
+      "error": null
+    },
+    {
+      "week": 8,
+      "scenarios": [
+        {
+          "name": "new_categories",
+          "first": 8,
+          "last": 9,
+          "severity": 0.05
+        }
+      ],
+      "stays_planned": 2056,
+      "scored": 2056,
+      "flagged": 476,
+      "mean_score": 0.4342179163424124,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 21,
+      "api_unseen_change": 204.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.040874895238078225,
+      "error": null
+    },
+    {
+      "week": 9,
+      "scenarios": [
+        {
+          "name": "new_categories",
+          "first": 8,
+          "last": 9,
+          "severity": 0.05
+        }
+      ],
+      "stays_planned": 2056,
+      "scored": 2056,
+      "flagged": 473,
+      "mean_score": 0.4360707261673151,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 21,
+      "api_unseen_change": 198.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.06161493333332774,
+      "error": null
+    },
+    {
+      "week": 10,
+      "scenarios": [],
+      "stays_planned": 2057,
+      "scored": 2057,
+      "flagged": 432,
+      "mean_score": 0.43550276081672334,
+      "requests": 21,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 1,
+      "api_unseen_change": 1.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.04501691904763339,
+      "error": null
+    },
+    {
+      "week": 11,
+      "scenarios": [
+        {
+          "name": "bad_data",
+          "first": 11,
+          "last": 11,
+          "severity": 0.25
+        }
+      ],
+      "stays_planned": 2063,
+      "scored": 2063,
+      "flagged": 407,
+      "mean_score": 0.4262011900145419,
+      "requests": 28,
+      "rejected_requests": 7,
+      "reject_reasons": {
+        "nulls": 2,
+        "not_numeric": 3,
+        "missing_columns": 2
+      },
+      "requests_with_unseen_values": 1,
+      "api_unseen_change": 1.0,
+      "api_rejected_change": 7.0,
+      "mean_request_seconds": 0.06949313809522686,
+      "error": null
+    },
+    {
+      "week": 12,
+      "scenarios": [
+        {
+          "name": "population_shift",
+          "first": 12,
+          "last": 12,
+          "severity": 0.6
+        }
+      ],
+      "stays_planned": 1676,
+      "scored": 1676,
+      "flagged": 320,
+      "mean_score": 0.4302926473747017,
+      "requests": 17,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 3,
+      "api_unseen_change": 3.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.045020370588203795,
+      "error": null
+    }
+  ]
+}

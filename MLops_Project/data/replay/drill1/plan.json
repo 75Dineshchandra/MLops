@@ -1,0 +1,61 @@
+{
+  "args": {
+    "csv": "C:\\Users\\DINESHCHANDRA GADDAM\\Downloads\\MLops_Project\\data\\splits\\holdout.csv",
+    "url": "http://localhost:8000",
+    "run_id": "drill1",
+    "weeks": 6,
+    "start_week": 1,
+    "seconds_per_week": 90.0,
+    "batch_size": 100,
+    "inject": [],
+    "preset": null,
+    "explain": false,
+    "seed": 42,
+    "out_dir": "C:\\Users\\DINESHCHANDRA GADDAM\\Downloads\\MLops_Project\\data\\replay",
+    "dry_run": false
+  },
+  "weeks": [
+    {
+      "week": 1,
+      "stays": 4114,
+      "patients": 2938,
+      "positive_rate": 0.1038,
+      "scenarios": []
+    },
+    {
+      "week": 2,
+      "stays": 4113,
+      "patients": 2795,
+      "positive_rate": 0.1177,
+      "scenarios": []
+    },
+    {
+      "week": 3,
+      "stays": 4114,
+      "patients": 2947,
+      "positive_rate": 0.1082,
+      "scenarios": []
+    },
+    {
+      "week": 4,
+      "stays": 4113,
+      "patients": 2916,
+      "positive_rate": 0.1099,
+      "scenarios": []
+    },
+    {
+      "week": 5,
+      "stays": 4113,
+      "patients": 2881,
+      "positive_rate": 0.1126,
+      "scenarios": []
+    },
+    {
+      "week": 6,
+      "stays": 4113,
+      "patients": 2973,
+      "positive_rate": 0.1109,
+      "scenarios": []
+    }
+  ]
+}

@@ -1,1 +1,9 @@
 {"time": "2026-10-21 12:15:38", "decision": "reject", "dry_run": false, "champion_version": 2, "candidate_version": 1, "champion_pr_auc": 0.2224, "candidate_pr_auc": 0.2178, "paired_gain_ci95": [-0.0105, 0.0013], "checks": {"lift >= 1.5": true, "ROC-AUC gap by group <= 0.05": true, "recall gap by group <= 0.1": true, "CV-to-test drop <= 0.02": true, "beats logistic baseline": true, "beats champion (95% range of PR-AUC gain above +0.000)": false}, "data": "C:\\Users\\DINESHCHANDRA GADDAM\\Downloads\\MLops_Project\\data\\splits\\test.csv"}
+{"time": "2026-10-27 15:46:55", "decision": "drill_swap", "from_version": 2, "to_version": 3, "note": "rollback drill; undo with promote.py --rollback"}
+{"time": "2026-10-27 15:47:56", "decision": "rollback", "from_version": 3, "to_version": 2}
+{"time": "2026-10-27 15:48:36", "decision": "drill_swap", "from_version": 2, "to_version": 3, "note": "rollback drill; undo with promote.py --rollback"}
+{"time": "2026-10-27 15:49:32", "decision": "rollback", "from_version": 3, "to_version": 2}
+{"time": "2026-10-27 16:29:55", "decision": "drill_swap", "from_version": 2, "to_version": 3, "note": "rollback drill; undo with promote.py --rollback"}
+{"time": "2026-10-27 16:30:21", "decision": "rollback", "from_version": 3, "to_version": 2}
+{"time": "2026-10-27 16:35:08", "decision": "drill_swap", "from_version": 2, "to_version": 3, "note": "rollback drill; undo with promote.py --rollback"}
+{"time": "2026-10-27 16:41:01", "decision": "rollback", "from_version": 3, "to_version": 2}

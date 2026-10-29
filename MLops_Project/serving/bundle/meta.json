@@ -20,6 +20,12 @@
     "rows": 14907,
     "share_flagged": 0.2
   },
+  "reference_profile": {
+    "file": "reference_profile.json",
+    "sha256": "1f9d0906b59710e341d48183209b1752bc99f62eed8d941fabcc6b7dd457294c",
+    "reference_rows": 14907,
+    "features": 46
+  },
   "example_record": {
     "encounter_id": "16680",
     "patient_nbr": "42519267",
@@ -82,5 +88,5 @@
     "mlflow": "3.1.4"
   },
   "python": "3.9.7",
-  "exported_at": "2026-10-26T16:47:05+05:30"
+  "exported_at": "2026-10-29T09:12:30+05:30"
 }

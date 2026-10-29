@@ -1,0 +1,294 @@
+{
+  "run_id": "demo1",
+  "created": "2026-10-28 16:07:54",
+  "baseline_weeks": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "baseline_stays": 8227,
+  "thresholds": {
+    "moderate": 0.1,
+    "major": 0.25
+  },
+  "noise_floor": {
+    "sample_size": 2057,
+    "median_psi": 0.0013,
+    "max_psi": 0.0127
+  },
+  "weeks": [
+    {
+      "week": 1,
+      "stays": 2057,
+      "baseline": true,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.1867,
+      "score_psi": 0.0062,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 2,
+      "stays": 2057,
+      "baseline": true,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.1959,
+      "score_psi": 0.0035,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 3,
+      "stays": 2057,
+      "baseline": true,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.2076,
+      "score_psi": 0.002,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 4,
+      "stays": 2056,
+      "baseline": true,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.2403,
+      "score_psi": 0.0088,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 5,
+      "stays": 2057,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.4847,
+      "score_psi": 0.4166,
+      "n_moderate": 0,
+      "n_major": 2,
+      "top": [
+        {
+          "feature": "number_inpatient",
+          "psi": 1.262,
+          "what": "mean 0.66 -> 2.01; 3 3.4% -> 36.5%, 0 65.9% -> 34.4%, 1 18.9% -> 9.9%"
+        },
+        {
+          "feature": "time_in_hospital",
+          "psi": 0.3379,
+          "what": "mean 4.34 -> 5.98"
+        }
+      ],
+      "injected": [
+        "covariate_shift"
+      ]
+    },
+    {
+      "week": 6,
+      "stays": 2057,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.4968,
+      "score_psi": 0.4705,
+      "n_moderate": 0,
+      "n_major": 2,
+      "top": [
+        {
+          "feature": "number_inpatient",
+          "psi": 1.2877,
+          "what": "mean 0.66 -> 2.25; 0 65.9% -> 31.9%, 3 3.4% -> 33.3%, 1 18.9% -> 9.7%"
+        },
+        {
+          "feature": "time_in_hospital",
+          "psi": 0.302,
+          "what": "mean 4.34 -> 5.84"
+        }
+      ],
+      "injected": [
+        "covariate_shift"
+      ]
+    },
+    {
+      "week": 7,
+      "stays": 2057,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.2018,
+      "score_psi": 0.0025,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 8,
+      "stays": 2056,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.2315,
+      "score_psi": 0.0067,
+      "n_moderate": 0,
+      "n_major": 2,
+      "top": [
+        {
+          "feature": "discharge_disposition_id",
+          "psi": 0.3366,
+          "what": "__unseen__ 0.0% -> 5.3%, 1 61.3% -> 58.5%, 22 2.2% -> 1.4%"
+        },
+        {
+          "feature": "medical_specialty",
+          "psi": 0.3112,
+          "what": "__unseen__ 0.0% -> 4.8%, missing 49.0% -> 45.7%, InternalMedicine 14.9% -> 14.0%"
+        }
+      ],
+      "injected": [
+        "new_categories"
+      ]
+    },
+    {
+      "week": 9,
+      "stays": 2056,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.2301,
+      "score_psi": 0.0114,
+      "n_moderate": 0,
+      "n_major": 2,
+      "top": [
+        {
+          "feature": "discharge_disposition_id",
+          "psi": 0.3204,
+          "what": "__unseen__ 0.0% -> 5.0%, 1 61.3% -> 57.3%, 3 13.1% -> 14.4%"
+        },
+        {
+          "feature": "medical_specialty",
+          "psi": 0.3196,
+          "what": "__unseen__ 0.0% -> 4.9%, missing 49.0% -> 46.3%, InternalMedicine 14.9% -> 14.0%"
+        }
+      ],
+      "injected": [
+        "new_categories"
+      ]
+    },
+    {
+      "week": 10,
+      "stays": 2057,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.21,
+      "score_psi": 0.0096,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": []
+    },
+    {
+      "week": 11,
+      "stays": 2063,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.1973,
+      "score_psi": 0.0101,
+      "n_moderate": 0,
+      "n_major": 0,
+      "top": [],
+      "injected": [
+        "bad_data"
+      ]
+    },
+    {
+      "week": 12,
+      "stays": 1676,
+      "baseline": false,
+      "model_versions": [
+        2
+      ],
+      "flagged_share": 0.1909,
+      "score_psi": 0.0199,
+      "n_moderate": 1,
+      "n_major": 0,
+      "top": [
+        {
+          "feature": "age",
+          "psi": 0.1887,
+          "what": "[50-60) 17.8% -> 7.8%, [70-80) 25.1% -> 33.2%, [60-70) 22.1% -> 27.3%"
+        }
+      ],
+      "injected": [
+        "population_shift"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "week": 5,
+      "injected": "covariate_shift",
+      "verdict": "CAUGHT: number_inpatient PSI 1.26 (major)"
+    },
+    {
+      "week": 6,
+      "injected": "covariate_shift",
+      "verdict": "CAUGHT: number_inpatient PSI 1.29 (major)"
+    },
+    {
+      "week": 7,
+      "injected": "none (clean)",
+      "verdict": "ok (nothing major)"
+    },
+    {
+      "week": 8,
+      "injected": "new_categories",
+      "verdict": "CAUGHT: discharge_disposition_id PSI 0.34 (major)"
+    },
+    {
+      "week": 9,
+      "injected": "new_categories",
+      "verdict": "CAUGHT: discharge_disposition_id PSI 0.32 (major)"
+    },
+    {
+      "week": 10,
+      "injected": "none (clean)",
+      "verdict": "ok (nothing major)"
+    },
+    {
+      "week": 11,
+      "injected": "bad_data",
+      "verdict": "not visible here: rejected requests are never logged (the error-share alert covers it)"
+    },
+    {
+      "week": 12,
+      "injected": "population_shift",
+      "verdict": "CAUGHT: age PSI 0.19 (moderate)"
+    }
+  ]
+}

@@ -5,51 +5,14 @@
   "version": 2,
   "model_family": "lightgbm",
   "training_run_id": "4270f0d3da7546dcaaca227cec44d00f",
-  "file": "02_lightgbm_prauc0.224.joblib",
   "gate": "PASS",
-  "gate_checks": {
-    "lift >= 1.5": true,
-    "CV-to-test drop <= 0.02": true,
-    "ROC-AUC gap by group <= 0.05": true,
-    "recall gap by group <= 0.1": true,
-    "beats logistic baseline": true
-  },
   "cv_pr_auc": 0.224,
-  "test_pr_auc": 0.2224,
-  "test_pr_auc_ci95": [
-    0.2002,
-    0.2473
-  ],
-  "test_roc_auc": 0.6699,
-  "test_lift": 1.925,
-  "params": {
-    "class_weight": null,
-    "colsample_bytree": 0.8,
-    "learning_rate": 0.05,
-    "max_depth": -1,
-    "min_child_samples": 40,
-    "min_child_weight": 0.001,
-    "n_estimators": 300,
-    "num_leaves": 31,
-    "random_state": 42,
-    "subsample": 0.8,
-    "subsample_freq": 1,
-    "scale_pos_weight": 7.704
-  },
-  "selection_reason": "Passed gate; tied with XGBoost on PR-AUC; chosen for more credible SHAP feature reasoning and stability.",
-  "verified_against_joblib": true,
-  "evaluated_at": "2026-10-21 12:31",
+  "test_pr_auc": 0.222,
+  "test_roc_auc": 0.67,
+  "test_lift": 1.93,
   "registered_at": "2026-10-21 12:35",
-  "other_versions": {
-    "xgboost": {
-      "version": 1,
-      "alias": "challenger",
-      "training_run_id": "1c1a1ab0a3ef42c38fdcfc3f0f0e4cfb"
-    },
-    "logistic": {
-      "version": 3,
-      "alias": "baseline",
-      "training_run_id": "36175d9d22d64f29894b58705ae5646c"
-    }
-  }
+  "promoted_at": "2026-10-27 16:35",
+  "previous_version": 2,
+  "reason": "Rolled back from version 3.",
+  "rolled_back_at": "2026-10-27 16:41"
 }

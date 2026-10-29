@@ -11,11 +11,15 @@ What it does
   (the test split by default; this only reads scores, nothing is evaluated or tuned).
 - Writes serving/bundle/model.joblib and serving/bundle/meta.json. meta.json is written last and holds a
   checksum of the model file, so the API refuses a half-written export.
+- Step 13: also writes serving/bundle/reference_profile.json, the REFERENCE the drift exporter compares live
+  traffic with: for every input feature (and for the scores) the bins or categories and their shares on the same
+  reference data. It is written before meta.json, so it is always in place when the bundle is complete.
 
 Why a bundle? MLflow stores absolute paths (such as C:\\Users\\...\\mlruns) in mlflow.db, which do not exist inside a
 Linux container, and SQLite does not behave well on mounted Windows folders. The bundle needs neither.
 
 Run this again after every promotion or rollback, then tell the API:  POST /reload
+(the drift exporter notices the new reference_profile.json by itself).
 """
 
 import argparse
@@ -24,6 +28,7 @@ import importlib.metadata as importlib_metadata
 import json
 import os
 import platform
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -64,7 +69,23 @@ def package_versions() -> dict:
     return out
 
 
-def write_bundle(pipe, out_dir: Path, meta_base: dict, reference: pd.DataFrame, flag_fraction: float) -> dict:
+def write_reference_profile(out_dir: Path, reference: pd.DataFrame, cols: list, scores, meta_base: dict, ref_name: str) -> dict:
+    """Step 13: save the drift reference (bins/categories and shares per feature, and for the scores)."""
+    sys.path.insert(0, str(find_project_root() / "monitoring"))
+    import drift_lib                                       # pandas + numpy only
+    profile = drift_lib.build_reference(
+        reference[cols], scores,
+        {"model_version": meta_base.get("version"), "model_family": meta_base.get("model_family"),
+         "reference_file": ref_name, "created": datetime.now().astimezone().isoformat(timespec="seconds")})
+    tmp = out_dir / "reference_profile.json.tmp"
+    tmp.write_text(json.dumps(profile), encoding="utf-8")
+    os.replace(tmp, out_dir / "reference_profile.json")
+    return {"file": "reference_profile.json", "sha256": sha256(out_dir / "reference_profile.json"),
+            "reference_rows": profile["reference_rows"], "features": len(profile["features"])}
+
+
+def write_bundle(pipe, out_dir: Path, meta_base: dict, reference: pd.DataFrame, flag_fraction: float,
+                 reference_name: str = "reference") -> dict:
     """Write the bundle. Needs no MLflow, so it can be tested on its own."""
     cols = list(pipe.named_steps["prep"].feature_names_in_)
     missing = [c for c in cols if c not in reference.columns]
@@ -79,10 +100,12 @@ def write_bundle(pipe, out_dir: Path, meta_base: dict, reference: pd.DataFrame, 
     tmp_model = out_dir / "model.joblib.tmp"
     joblib.dump(pipe, tmp_model)
     os.replace(tmp_model, out_dir / "model.joblib")
+    profile_info = write_reference_profile(out_dir, reference, cols, scores, meta_base, reference_name)   # step 13
     meta = {**meta_base, "model_sha256": sha256(out_dir / "model.joblib"),
             "flag_fraction": flag_fraction, "flag_cutoff": cutoff,
             "flag_cutoff_based_on": {"rows": int(len(reference)),
                                      "share_flagged": round(float((scores >= cutoff).mean()), 4)},
+            "reference_profile": profile_info,
             "example_record": example, "packages": package_versions(), "python": platform.python_version(),
             "exported_at": datetime.now().astimezone().isoformat(timespec="seconds")}
     tmp_meta = out_dir / "meta.json.tmp"
@@ -122,7 +145,7 @@ def main() -> None:
                  "model_family": mv.tags.get("model_family"), "training_run_id": mv.tags.get("training_run_id", mv.run_id),
                  "registry_tags": {k: v for k, v in mv.tags.items() if k in KEEP_TAGS}}
     out_dir = Path(args.out)
-    meta = write_bundle(pipe, out_dir, meta_base, reference, args.flag_fraction)
+    meta = write_bundle(pipe, out_dir, meta_base, reference, args.flag_fraction, ref_path.name)
 
     if not args.no_ledger:
         ledger = root / "models" / "data_use_log.jsonl"
@@ -130,13 +153,16 @@ def main() -> None:
         with open(ledger, "a", encoding="utf-8") as f:
             f.write(json.dumps({"time": f"{datetime.now():%Y-%m-%d %H:%M:%S}", "data_name": ref_path.stem,
                                 "data_file": str(ref_path), "rows": int(len(reference)),
-                                "purpose": "flag cutoff for the serving bundle (scores only, nothing evaluated)"}) + "\n")
+                                "purpose": "flag cutoff and drift reference profile for the serving bundle (scores and features only, nothing evaluated)"}) + "\n")
 
     size_mb = (out_dir / "model.joblib").stat().st_size / 1e6
     print(f"Exported {args.name}@{args.alias}: version {meta['version']} ({meta['model_family']}) -> {out_dir}")
     print(f"  model.joblib {size_mb:.1f} MB, sha256 {meta['model_sha256'][:12]}")
     print(f"  high-risk flag: top {args.flag_fraction:.0%} of {meta['flag_cutoff_based_on']['rows']:,} reference stays, "
           f"cutoff score {meta['flag_cutoff']:.4f}")
+    rp = meta["reference_profile"]
+    print(f"  drift reference: {rp['features']} features and the scores, from {rp['reference_rows']:,} reference stays "
+          f"({rp['file']}, sha256 {rp['sha256'][:12]})")
     print(f"  packages at export: " + ", ".join(f"{k} {v}" for k, v in meta['packages'].items() if k != 'mlflow'))
     print("Next: start or reload the API (docker compose up -d, or POST http://localhost:8000/reload).")
 

@@ -1,0 +1,59 @@
+{
+  "run_id": "pop2",
+  "created": "2026-10-28 15:39:38",
+  "stopped": "finished",
+  "model_versions_seen": [
+    2
+  ],
+  "seed": 42,
+  "seconds_per_week": 120.0,
+  "clean_week_flagged_share": null,
+  "weeks": [
+    {
+      "week": 11,
+      "scenarios": [
+        {
+          "name": "population_shift_young",
+          "first": 11,
+          "last": 12,
+          "severity": 0.8
+        }
+      ],
+      "stays_planned": 981,
+      "scored": 981,
+      "flagged": 201,
+      "mean_score": 0.4035239184505606,
+      "requests": 10,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 1,
+      "api_unseen_change": 1.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.1276752599999999,
+      "error": null
+    },
+    {
+      "week": 12,
+      "scenarios": [
+        {
+          "name": "population_shift_young",
+          "first": 11,
+          "last": 12,
+          "severity": 0.8
+        }
+      ],
+      "stays_planned": 906,
+      "scored": 906,
+      "flagged": 148,
+      "mean_score": 0.3885445198675497,
+      "requests": 10,
+      "rejected_requests": 0,
+      "reject_reasons": {},
+      "requests_with_unseen_values": 0,
+      "api_unseen_change": 0.0,
+      "api_rejected_change": 0.0,
+      "mean_request_seconds": 0.10913970999999804,
+      "error": null
+    }
+  ]
+}

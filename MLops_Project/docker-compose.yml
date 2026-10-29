@@ -13,8 +13,31 @@ services:
       # ADMIN_TOKEN: "change-me"        # if set, POST /reload needs the header X-Admin-Token
     volumes:
       - ./serving/bundle:/app/bundle:ro   # the exported champion (python serving/export_champion.py)
-      - ./serving/logs:/app/logs          # prediction log, used later for drift and late-label checks
+      - ./serving/logs:/app/logs          # prediction log, used for drift and late-label checks
       - ./serving/ui:/app/ui:ro           # the console: edits show up after a browser refresh, no rebuild needed
+    restart: unless-stopped
+
+  drift-exporter:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile.drift
+    image: readmission-drift:local
+    container_name: readmission-drift
+    environment:
+      LOG_PATH: "/data/logs/predictions.jsonl"
+      PROFILE_PATH: "/data/bundle/reference_profile.json"
+      WINDOW_ROWS: "1000"        # compare the most recent 1000 stays with the reference
+      MIN_ROWS: "500"            # fewer stays than this: no verdict
+      MAX_AGE_SECONDS: "600"     # newest stay older than this: no verdict (no recent traffic)
+      INTERVAL: "15"             # seconds between evaluations
+      # RUN_ID: "demo1"          # only use stays of one replay run (default: all traffic)
+    ports:
+      - "9100:9100"
+    volumes:
+      - ./serving/logs:/data/logs:ro        # the API's prediction log, read-only
+      - ./serving/bundle:/data/bundle:ro    # reference_profile.json, written by serving/export_champion.py
+    depends_on:
+      - readmission-api
     restart: unless-stopped
 
   prometheus:
@@ -27,10 +50,11 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus:/etc/prometheus:ro   # prometheus.yml and alerts.yml
+      - ./monitoring/prometheus:/etc/prometheus:ro   # prometheus.yml and the alert rule files
       - prometheus_data:/prometheus                  # the metric history survives restarts and rebuilds
     depends_on:
       - readmission-api
+      - drift-exporter
     restart: unless-stopped
 
   grafana:

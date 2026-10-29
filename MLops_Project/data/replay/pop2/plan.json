@@ -1,0 +1,120 @@
+{
+  "args": {
+    "csv": "C:\\Users\\DINESHCHANDRA GADDAM\\Downloads\\MLops_Project\\data\\splits\\holdout.csv",
+    "url": "http://localhost:8000",
+    "run_id": "pop2",
+    "weeks": 12,
+    "start_week": 11,
+    "seconds_per_week": 120.0,
+    "batch_size": 100,
+    "inject": [
+      "population_shift_young:11-12"
+    ],
+    "preset": null,
+    "explain": false,
+    "seed": 42,
+    "out_dir": "C:\\Users\\DINESHCHANDRA GADDAM\\Downloads\\MLops_Project\\data\\replay",
+    "dry_run": false,
+    "show_examples": false
+  },
+  "weeks": [
+    {
+      "week": 1,
+      "stays": 2057,
+      "patients": 1487,
+      "positive_rate": 0.0963,
+      "scenarios": []
+    },
+    {
+      "week": 2,
+      "stays": 2057,
+      "patients": 1451,
+      "positive_rate": 0.1113,
+      "scenarios": []
+    },
+    {
+      "week": 3,
+      "stays": 2057,
+      "patients": 1423,
+      "positive_rate": 0.1113,
+      "scenarios": []
+    },
+    {
+      "week": 4,
+      "stays": 2056,
+      "patients": 1372,
+      "positive_rate": 0.124,
+      "scenarios": []
+    },
+    {
+      "week": 5,
+      "stays": 2057,
+      "patients": 1518,
+      "positive_rate": 0.1065,
+      "scenarios": []
+    },
+    {
+      "week": 6,
+      "stays": 2057,
+      "patients": 1429,
+      "positive_rate": 0.1099,
+      "scenarios": []
+    },
+    {
+      "week": 7,
+      "stays": 2057,
+      "patients": 1439,
+      "positive_rate": 0.1157,
+      "scenarios": []
+    },
+    {
+      "week": 8,
+      "stays": 2056,
+      "patients": 1477,
+      "positive_rate": 0.1041,
+      "scenarios": []
+    },
+    {
+      "week": 9,
+      "stays": 2056,
+      "patients": 1465,
+      "positive_rate": 0.0973,
+      "scenarios": []
+    },
+    {
+      "week": 10,
+      "stays": 2057,
+      "patients": 1416,
+      "positive_rate": 0.1279,
+      "scenarios": []
+    },
+    {
+      "week": 11,
+      "stays": 2063,
+      "patients": 1492,
+      "positive_rate": 0.1095,
+      "scenarios": [
+        {
+          "name": "population_shift_young",
+          "first": 11,
+          "last": 12,
+          "severity": 0.8
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "stays": 2050,
+      "patients": 1481,
+      "positive_rate": 0.1122,
+      "scenarios": [
+        {
+          "name": "population_shift_young",
+          "first": 11,
+          "last": 12,
+          "severity": 0.8
+        }
+      ]
+    }
+  ]
+}

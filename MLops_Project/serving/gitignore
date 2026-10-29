@@ -1,0 +1,22 @@
+# environment and caches
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# data (download from UCI, see README section 3.3)
+data/*.csv
+data/splits/
+data/replay/
+data/drift/
+data/*_report.txt
+data/leak_review_columns.csv
+
+# pipeline outputs (rebuilt by running the scripts)
+models/
+mlflow.db
+mlruns/
+
+# serving runtime files
+serving/bundle/
+serving/logs/
